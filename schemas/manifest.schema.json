@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://satelite.invalid/schemas/module-manifest-1.json",
+  "title": "SATeLite module manifest (contract 1.x)",
+  "type": "object",
+  "required": [
+    "code", "name", "version", "contract_version",
+    "schema_version", "menu_entry", "supported_languages",
+    "declared_permissions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "code": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{1,31}$",
+      "description": "Stable unique identifier. Namespaces the module's permissions, audit codes and translation keys. Never changes across versions, and must be unique across installed modules."
+    },
+    "name": {
+      "type": "string",
+      "maxLength": 64,
+      "description": "Plain-text display name, used as a fallback whenever the module's translations are unavailable."
+    },
+    "name_key": {
+      "type": "string",
+      "description": "Optional. Translation key for the display name, resolved in the module's own namespace."
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of the module itself."
+    },
+    "contract_version": {
+      "type": "string",
+      "description": "Version of the integration contract the module implements."
+    },
+    "schema_version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Version of the module's own database schema."
+    },
+    "menu_entry": {
+      "type": "object",
+      "required": ["label_key", "icon"],
+      "properties": {
+        "label_key": { "type": "string" },
+        "icon": { "type": "string" }
+      }
+    },
+    "supported_languages": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z]{2}(-[A-Z]{2})?$" },
+      "contains": { "const": "en-US" },
+      "description": "Must include en-US, the reference language."
+    },
+    "declared_permissions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["resource_type", "action", "label_key"],
+        "properties": {
+          "resource_type": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "action": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "label_key": { "type": "string" },
+          "scope_type": { "type": "string" }
+        }
+      }
+    },
+    "scope_types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "label_key", "value_shape", "selector"],
+        "properties": {
+          "type": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "label_key": { "type": "string" },
+          "value_shape": { "type": "string", "enum": ["id_list", "string_value"] },
+          "selector": { "type": "string", "enum": ["flat_list", "tree", "free_text"] }
+        }
+      }
+    },
+    "required_connection_types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "label_key", "credential_schema"],
+        "properties": {
+          "type": { "type": "string" },
+          "label_key": { "type": "string" },
+          "optional": { "type": "boolean", "default": false },
+          "credential_schema": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "required": ["type", "secret", "label_key"],
+              "properties": {
+                "type": { "type": "string", "enum": ["string", "integer", "boolean", "enum", "certificate_pem", "private_key_pem"] },
+                "values": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["value", "label_key"],
+                    "properties": {
+                      "value": { "type": "string" },
+                      "label_key": { "type": "string" }
+                    }
+                  }
+                },
+                "default": {},
+                "secret": { "type": "boolean" },
+                "label_key": { "type": "string" },
+                "help_key": { "type": "string" },
+                "widget": { "type": "string", "enum": ["single_line", "multiline", "password", "file"], "default": "single_line" },
+                "required": { "type": "boolean", "default": true }
+              }
+            }
+          }
+        }
+      }
+    },
+    "scheduled_tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "label_key", "frequency", "endpoint"],
+        "properties": {
+          "code": { "type": "string" },
+          "label_key": { "type": "string" },
+          "frequency": { "type": "string" },
+          "endpoint": { "type": "string", "pattern": "^/internal/tasks/" },
+          "requires_connection_types": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "repository_url": { "type": "string", "format": "uri" },
+    "translation_contribution_url": { "type": "string", "format": "uri" }
+  }
+}
