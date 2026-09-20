@@ -4,6 +4,7 @@
  */
 export const CONTRACT_VERSION = '1.0';
 
+export * from './core-api';
 export * from './manifest';
 export * from './shared-libraries';
 export * from './shell-context';
