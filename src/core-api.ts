@@ -54,6 +54,9 @@ export interface AuditRequest {
 /** `GET /internal/health` (§3.2): the module's own state, never the reachability of its targets. */
 export interface InternalHealthResponse {
   status: 'ok' | 'error';
+  /** Which module answers (§3.2): the core refuses a backend that answers as another. */
+  module_code: string;
+  module_version: string;
   schema_version: number;
   message?: string;
   /**
@@ -61,7 +64,11 @@ export interface InternalHealthResponse {
    * expires, so that the core can warn before it lapses. Learnt at the last synchronisation:
    * health never asks the target.
    */
-  connection_expiries?: { connection_id: string; expires_at: string }[];
+  connection_expiries?: {
+    connection_id: string;
+    /** When the credential stops working; `null` says it is known not to expire. Absent entry: unknown. */
+    expires_at: string | null;
+  }[];
 }
 
 /** `POST /internal/migrate` (§3.3). */
@@ -79,5 +86,5 @@ export interface InternalMigrateResponse {
 /** `POST /internal/sync` (§5.5): asynchronous, answered as soon as it is accepted. */
 export interface InternalSyncRequest {
   connection_type: string;
-  reason: 'connection_configured' | 'module_reenabled';
+  reason: 'connection_configured' | 'module_reenabled' | 'module_started';
 }

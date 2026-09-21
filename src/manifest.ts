@@ -38,6 +38,14 @@ export interface RequiredConnectionType {
   credential_schema: Record<string, CredentialField>;
 }
 
+/** What a module suggests about deploying its backend: hints for the administrator, nothing binding. */
+export interface BackendHints {
+  /** Port the backend listens on by default. */
+  default_port: number;
+  /** Container image reference, when the author publishes one. Informative. */
+  image?: string;
+}
+
 export interface ScheduledTaskDeclaration {
   code: string;
   label_key: string;
@@ -64,6 +72,11 @@ export interface ModuleManifest {
   scope_types?: ScopeType[];
   required_connection_types?: RequiredConnectionType[];
   scheduled_tasks?: ScheduledTaskDeclaration[];
+  /**
+   * Present when the module has a backend of its own (contract §1.0); absent for a module that
+   * is an interface alone. The address is never here: the administrator registers it.
+   */
+  backend?: BackendHints;
   repository_url?: string;
   translation_contribution_url?: string;
 }
