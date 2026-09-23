@@ -90,7 +90,7 @@
             "type": "object",
             "additionalProperties": {
               "type": "object",
-              "required": ["type", "secret", "label_key"],
+              "required": ["type", "secret", "label_key", "order"],
               "properties": {
                 "type": { "type": "string", "enum": ["string", "integer", "boolean", "enum", "certificate_pem", "private_key_pem"] },
                 "values": {
@@ -109,7 +109,8 @@
                 "label_key": { "type": "string" },
                 "help_key": { "type": "string" },
                 "widget": { "type": "string", "enum": ["single_line", "multiline", "password", "file"], "default": "single_line" },
-                "required": { "type": "boolean", "default": true }
+                "required": { "type": "boolean", "default": true },
+                "order": { "type": "integer", "description": "Where this field sits in the rendered form, lowest first. Required because a JSON object's own key order is not reliably preserved once the manifest has passed through the database." }
               }
             }
           }

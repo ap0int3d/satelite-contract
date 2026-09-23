@@ -29,6 +29,8 @@ export interface CredentialField {
   help_key?: string;
   widget?: 'single_line' | 'multiline' | 'password' | 'file';
   required?: boolean;
+  /** Where this field sits in the rendered form, lowest first (contract §5.1). */
+  order: number;
 }
 
 export interface RequiredConnectionType {
