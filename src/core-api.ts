@@ -88,3 +88,16 @@ export interface InternalSyncRequest {
   connection_type: string;
   reason: 'connection_configured' | 'module_reenabled' | 'module_started';
 }
+
+/** `POST /internal/tasks/<endpoint>` (§6): one of the module's own declared scheduled tasks. */
+export interface InternalTaskRequest {
+  task_code: string;
+  triggered_by: 'schedule' | 'manual';
+}
+
+export interface InternalTaskResponse {
+  status: 'ok';
+  /** Translated at display time, in the module's own catalogue — the core never invents a sentence. */
+  summary_key?: string;
+  summary_params?: Record<string, unknown>;
+}
