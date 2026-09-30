@@ -31,4 +31,4 @@ export const SHARED_LIBRARIES: Readonly<Record<string, string>> = {
  * accept the same major version.
  */
 export const SHELL_UI_LIBRARY = '@satelite/shell-ui';
-export const SHELL_UI_VERSION = '1.0.0';
+export const SHELL_UI_VERSION = '1.1.0';
