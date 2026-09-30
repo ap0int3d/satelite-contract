@@ -55,4 +55,23 @@ declare module '@satelite/shell-ui' {
    */
   export function DiffView(props: DiffViewProps): import('react').ReactElement;
 
+  export interface AuditTrailProps {
+    /** Code of the module whose events are shown; also the namespace that words its actions. */
+    module: string;
+    /**
+     * The entity whose history is shown. An event belongs to it when its `target` is this
+     * value, or when it carries this value as its `entity` parameter (for events whose target
+     * is something finer, such as a record within a zone).
+     */
+    entity: string;
+    /** Change it to reload the history, e.g. after an action that adds to it. */
+    refreshKey?: string | number;
+  }
+
+  /**
+   * History of one entity, most recent first, translated at display time, with what changed
+   * shown as a diff. Open to whoever can use the module; the full journal stays with administrators.
+   */
+  export function AuditTrail(props: AuditTrailProps): import('react').ReactElement;
+
 }
