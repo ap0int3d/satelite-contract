@@ -48,6 +48,13 @@ export interface BackendHints {
   image?: string;
 }
 
+export interface SearchCapability {
+  entity_type: string;
+  label_key: string;
+  /** A `${resource_type}:${action}` pair from this module's own `declared_permissions`. */
+  permission: string;
+}
+
 export interface ScheduledTaskDeclaration {
   code: string;
   label_key: string;
@@ -72,6 +79,11 @@ export interface ModuleManifest {
   supported_languages: string[];
   declared_permissions: DeclaredPermission[];
   scope_types?: ScopeType[];
+  /**
+   * Entity types this module exposes to cross-module search (contract §4.5), and the permission
+   * each requires. Absent or empty: the module does not answer `GET /api/modules/<code>/search`.
+   */
+  search_capabilities?: SearchCapability[];
   required_connection_types?: RequiredConnectionType[];
   scheduled_tasks?: ScheduledTaskDeclaration[];
   /**

@@ -77,6 +77,19 @@
         }
       }
     },
+    "search_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["entity_type", "label_key", "permission"],
+        "additionalProperties": false,
+        "properties": {
+          "entity_type": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "label_key": { "type": "string" },
+          "permission": { "type": "string", "pattern": "^[a-z][a-z0-9_]*:[a-z][a-z0-9_]*$" }
+        }
+      }
+    },
     "required_connection_types": {
       "type": "array",
       "items": {
