@@ -74,4 +74,16 @@ declare module '@satelite/shell-ui' {
    */
   export function AuditTrail(props: AuditTrailProps): import('react').ReactElement;
 
+  export interface NotificationsProps {
+    /** Show only this module's notifications (its `code`); all the person may see when omitted. */
+    module?: string;
+  }
+
+  /**
+   * The in-app notification surface: a bell with the number of unread notifications and their
+   * list. A notification is a structured event worded at display time, leads to the screen
+   * concerned, and is read per user. The shell shows one in its header for every notification;
+   * a module never builds its own surface, and may embed a filtered one where it helps.
+   */
+  export function Notifications(props: NotificationsProps): import('react').ReactElement;
 }

@@ -49,6 +49,24 @@ export interface AuditRequest {
   user_token?: string;
 }
 
+/**
+ * `POST /core/notifications` (§7.1): a problem that calls for an administrator's attention.
+ * Raising one that is still open refreshes it instead of adding another. `link` is a path in
+ * the shell and must lie inside the module's own (`/<code>/...`).
+ */
+export interface NotificationRequest {
+  event_code: string;
+  target?: string;
+  parameters?: Record<string, unknown>;
+  link?: string;
+}
+
+/** `POST /core/notifications/resolve` (§7.1): the problem is gone; its return will be reported afresh. */
+export interface NotificationResolveRequest {
+  event_code: string;
+  target?: string;
+}
+
 // --- Core -> module -------------------------------------------------------------
 
 /** `GET /internal/health` (§3.2): the module's own state, never the reachability of its targets. */
