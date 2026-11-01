@@ -13,6 +13,8 @@
 declare module '@satelite/shell-ui' {
   export interface StatusBadgeProps {
     status: import('@satelite/contract').DraftStatus;
+    /** Merged with the badge's own style - e.g. `cursor: 'pointer'`, which Mantine's Badge otherwise fixes to `default` regardless of an ancestor made clickable. */
+    style?: import('react').CSSProperties;
   }
 
   /** Draft / applied / drift detected / undetermined, drawn and translated by the shell. */
