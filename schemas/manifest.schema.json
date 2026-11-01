@@ -123,7 +123,17 @@
                 "help_key": { "type": "string" },
                 "widget": { "type": "string", "enum": ["single_line", "multiline", "password", "file"], "default": "single_line" },
                 "required": { "type": "boolean", "default": true },
-                "order": { "type": "integer", "description": "Where this field sits in the rendered form, lowest first. Required because a JSON object's own key order is not reliably preserved once the manifest has passed through the database." }
+                "order": { "type": "integer", "description": "Where this field sits in the rendered form, lowest first. Required because a JSON object's own key order is not reliably preserved once the manifest has passed through the database." },
+                "visible_when": {
+                  "type": "object",
+                  "required": ["field", "equals"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": { "type": "string", "description": "Name of another field in the same credential_schema." },
+                    "equals": { "type": "array", "items": { "type": "string" }, "minItems": 1, "uniqueItems": true }
+                  },
+                  "description": "Shows this field only while the named field currently holds one of these values. That field must come first in declaration order."
+                }
               }
             }
           }

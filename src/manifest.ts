@@ -31,6 +31,13 @@ export interface CredentialField {
   required?: boolean;
   /** Where this field sits in the rendered form, lowest first (contract §5.1). */
   order: number;
+  /**
+   * Shows this field only while another field of the same schema currently holds one of
+   * `equals` (contract §5.1) — e.g. a "custom" option on an `enum` field unlocking a field
+   * to type a value into. The referenced field must exist in the same `credential_schema`
+   * and come before this one in declaration order. A hidden field's value is never sent.
+   */
+  visible_when?: { field: string; equals: [string, ...string[]] };
 }
 
 export interface RequiredConnectionType {
