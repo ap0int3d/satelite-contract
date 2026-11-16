@@ -94,6 +94,26 @@ export interface ScopeValuesResponse {
 
 // --- Core -> module -------------------------------------------------------------
 
+/** A scope a grant is limited to: its type, and the values the module reads (see `ScopeType`). */
+export type GrantScope = { type: string; [key: string]: unknown };
+
+/**
+ * `POST /internal/entity-access`: which of the entities named the signed-in person may see, given
+ * the scopes their grants are limited to. `entities` are named as the module names them in the
+ * audit journal (`parameters.entity`). An entity the module cannot place within the scopes is not
+ * visible, and neither is one it does not know. The core calls this only for a person whose grants
+ * on the module are all limited: an unlimited grant sees everything without asking.
+ */
+export interface EntityAccessRequest {
+  entities: string[];
+  scopes: GrantScope[];
+}
+
+export interface EntityAccessResponse {
+  /** A subset of `entities`, in any order. */
+  visible: string[];
+}
+
 /** `GET /internal/health` (§3.2): the module's own state, never the reachability of its targets. */
 export interface InternalHealthResponse {
   status: 'ok' | 'error';
