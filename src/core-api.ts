@@ -49,6 +49,19 @@ export interface ModuleSecretValue {
   value: string;
 }
 
+/**
+ * `GET /core/database-connection` (§5.8, contract 2.0): where the calling module connects to its
+ * own database, and as whom. `user` is the module's code; `password` is renewed by the core alone.
+ * Answers 404 for a module with no backend, which has no database account.
+ */
+export interface DatabaseConnectionResponse {
+  host: string;
+  port: number;
+  database: string;
+  user: string;
+  password: string;
+}
+
 /** `POST /core/audit` (§7): omit `user_token` for actions performed by a scheduled task. */
 export interface AuditRequest {
   action_code: string;
