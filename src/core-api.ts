@@ -50,6 +50,27 @@ export interface ModuleSecretValue {
 }
 
 /**
+ * How a module encrypts its connection to its database (§5.8, contract 2.1).
+ * - `verify-full`: encrypted, and the server's certificate is checked against `ca`, host name
+ *   included (the host the module actually connects to). The default.
+ * - `require`: encrypted, without checking who the server is.
+ * - `disable`: not encrypted.
+ */
+export type DatabaseTlsMode = 'disable' | 'require' | 'verify-full';
+
+export const DATABASE_TLS_MODES: readonly DatabaseTlsMode[] = ['disable', 'require', 'verify-full'];
+
+/** The core's instruction on encryption: the module follows it and has nothing to configure. */
+export interface DatabaseTls {
+  mode: DatabaseTlsMode;
+  /**
+   * The certificate, in PEM form, of the authority that signed the server's certificate. Public, not
+   * a secret. Present when `mode` is `verify-full`.
+   */
+  ca?: string;
+}
+
+/**
  * `GET /core/database-connection` (§5.8, contract 2.0): where the calling module connects to its
  * own database, and as whom. `user` is the module's code; `password` is renewed by the core alone.
  * Answers 404 for a module with no backend, which has no database account.
@@ -60,6 +81,12 @@ export interface DatabaseConnectionResponse {
   database: string;
   user: string;
   password: string;
+  /**
+   * How to encrypt the connection (contract 2.1); the module must follow it. A core of contract 2.1
+   * always sends it. Absent only from an older core, which does not encrypt: the module then
+   * connects as before, without encryption.
+   */
+  tls?: DatabaseTls;
 }
 
 /** `POST /core/audit` (§7): omit `user_token` for actions performed by a scheduled task. */
